@@ -60,21 +60,23 @@ BEGIN
             SET completed_count   = completed_count - 1,
                 uncompleted_count = uncompleted_count + 1
             where new.category = id;
-        ELSEIF (old.completed <> new.completed AND new.completed = 1 AND old.category IS NULL) THEN
+        ELSEIF (old.completed <> new.completed AND new.completed = 1 AND
+                old.category IS NOT DISTINCT FROM new.category) THEN
             UPDATE statistics SET completed_total = completed_total + 1, uncompleted_total = uncompleted_total - 1;
-        ELSEIF (old.completed <> new.completed AND new.completed = 0 AND old.category IS NULL) THEN
+        ELSEIF (old.completed <> new.completed AND new.completed = 0 AND
+                old.category IS NOT DISTINCT FROM new.category) THEN
             UPDATE statistics SET completed_total = completed_total - 1, uncompleted_total = uncompleted_total + 1;
-        ELSEIF (old.completed = new.completed AND new.completed = 1 AND old.category <> new.category) THEN
+        ELSEIF (old.completed = new.completed AND new.completed = 1 AND new.category IS DISTINCT FROM old.category) THEN
             UPDATE categories SET completed_count = completed_count + 1 where new.category = id;
             UPDATE categories SET completed_count = completed_count - 1 where old.category = id;
-        ELSEIF (old.completed = new.completed AND new.completed = 0 AND old.category <> new.category) THEN
+        ELSEIF (old.completed = new.completed AND new.completed = 0 AND new.category IS DISTINCT FROM old.category) THEN
             UPDATE categories SET uncompleted_count = uncompleted_count + 1 where new.category = id;
             UPDATE categories SET uncompleted_count = uncompleted_count - 1 where old.category = id;
-        ELSEIF (old.completed <> new.completed AND new.completed = 1 AND old.category <> new.category) THEN
+        ELSEIF (old.completed <> new.completed AND new.completed = 1 AND new.category IS DISTINCT FROM old.category) THEN
             UPDATE categories SET completed_count = completed_count + 1 where new.category = id;
             UPDATE categories SET uncompleted_count = uncompleted_count - 1 where old.category = id;
             UPDATE statistics SET completed_total = completed_total + 1, uncompleted_total = uncompleted_total - 1;
-        ELSEIF (old.completed <> new.completed AND new.completed = 0 AND old.category <> new.category) THEN
+        ELSEIF (old.completed <> new.completed AND new.completed = 0 AND new.category IS DISTINCT FROM old.category) THEN
             UPDATE categories SET uncompleted_count = uncompleted_count + 1 where new.category = id;
             UPDATE categories SET completed_count = completed_count - 1 where old.category = id;
             UPDATE statistics SET completed_total = completed_total - 1, uncompleted_total = uncompleted_total + 1;
