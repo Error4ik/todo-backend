@@ -2,6 +2,7 @@ package com.backend.todo.controller;
 
 import com.backend.todo.domain.Priority;
 import com.backend.todo.service.PriorityService;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,5 +25,10 @@ public class PriorityController {
     @RequestMapping("/priorities")
     public List<Priority> getPriorities() {
         return this.priorityService.getPriorities();
+    }
+
+    @PostMapping("/add")
+    public Priority addPriority(Priority priority) {
+        return this.priorityService.addPriority(priority);
     }
 }

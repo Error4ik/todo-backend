@@ -2,6 +2,7 @@ package com.backend.todo.controller;
 
 import com.backend.todo.domain.Category;
 import com.backend.todo.service.CategoryService;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,5 +25,10 @@ public class CategoryController {
     @RequestMapping("/categories")
     public List<Category> getCategories() {
         return this.categoryService.getCategories();
+    }
+
+    @PostMapping("/add")
+    public Category addCategory(Category category) {
+        return this.categoryService.addCategory(category);
     }
 }
