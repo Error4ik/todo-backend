@@ -2,15 +2,17 @@ package com.backend.todo.controller;
 
 import com.backend.todo.domain.Priority;
 import com.backend.todo.service.PriorityService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * @author Alexey Voronin.
@@ -19,6 +21,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/priority")
 public class PriorityController {
+
+    Logger logger = LoggerFactory.getLogger(PriorityController.class);
 
     private PriorityService priorityService;
 
@@ -57,5 +61,24 @@ public class PriorityController {
             return new ResponseEntity("Missed parameters: color", HttpStatus.NOT_ACCEPTABLE);
         }
         return ResponseEntity.ok(this.priorityService.updatePriority(priority));
+    }
+
+    @GetMapping("/id/{id}")
+    public ResponseEntity<Priority> getPriorityById(@PathVariable UUID id) {
+        Optional<Priority> priority = this.priorityService.getPriorityById(id);
+        if (!priority.isPresent()) {
+            return new ResponseEntity("There is no entity with this ID!", HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(priority.get());
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity deletePriority(@PathVariable UUID id) {
+        try {
+            this.priorityService.deletePriority(id);
+        } catch (EmptyResultDataAccessException e) {
+            this.logger.error("There is no entity with this ID!");
+        }
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

@@ -5,6 +5,8 @@ import com.backend.todo.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * @author Alexey Voronin.
@@ -29,5 +31,13 @@ public class CategoryService {
 
     public Category updateCategory(Category category) {
         return this.categoryRepository.save(category);
+    }
+
+    public Optional<Category> getCategoryById(UUID id) {
+        return this.categoryRepository.findById(id);
+    }
+
+    public void deleteCategory(UUID id) {
+        this.categoryRepository.deleteById(id);
     }
 }

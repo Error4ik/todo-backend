@@ -5,6 +5,8 @@ import com.backend.todo.repository.PriorityRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * @author Alexey Voronin.
@@ -29,5 +31,13 @@ public class PriorityService {
 
     public Priority updatePriority(Priority priority) {
         return this.priorityRepository.save(priority);
+    }
+
+    public Optional<Priority> getPriorityById(UUID id) {
+        return this.priorityRepository.findById(id);
+    }
+
+    public void deletePriority(UUID id) {
+        this.priorityRepository.deleteById(id);
     }
 }
