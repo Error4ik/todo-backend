@@ -26,4 +26,8 @@ public class PriorityService {
     public Priority addPriority(Priority priority) {
         return this.priorityRepository.save(priority);
     }
+
+    public Priority updatePriority(Priority priority) {
+        return this.priorityRepository.save(priority);
+    }
 }

@@ -2,7 +2,11 @@ package com.backend.todo.controller;
 
 import com.backend.todo.domain.Priority;
 import com.backend.todo.service.PriorityService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +32,30 @@ public class PriorityController {
     }
 
     @PostMapping("/add")
-    public Priority addPriority(Priority priority) {
-        return this.priorityService.addPriority(priority);
+    public ResponseEntity<Priority> addPriority(@NonNull Priority priority) {
+        if (priority.getId() != null) {
+            return new ResponseEntity("The redundant param: id parameter must be null", HttpStatus.NOT_ACCEPTABLE);
+        }
+        if (priority.getTitle() == null || priority.getTitle().trim().isEmpty()) {
+            return new ResponseEntity("Missed parameters: title", HttpStatus.NOT_ACCEPTABLE);
+        }
+        if (priority.getColor() == null || priority.getColor().trim().isEmpty()) {
+            return new ResponseEntity("Missed parameters: color", HttpStatus.NOT_ACCEPTABLE);
+        }
+        return ResponseEntity.ok(this.priorityService.addPriority(priority));
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<Priority> updatePriority(@NonNull Priority priority) {
+        if (priority.getId() == null) {
+            return new ResponseEntity("Missed: the id parameter must not be null", HttpStatus.NOT_ACCEPTABLE);
+        }
+        if (priority.getTitle() == null || priority.getTitle().trim().isEmpty()) {
+            return new ResponseEntity("Missed parameters: title", HttpStatus.NOT_ACCEPTABLE);
+        }
+        if (priority.getColor() == null || priority.getColor().trim().isEmpty()) {
+            return new ResponseEntity("Missed parameters: color", HttpStatus.NOT_ACCEPTABLE);
+        }
+        return ResponseEntity.ok(this.priorityService.updatePriority(priority));
     }
 }
