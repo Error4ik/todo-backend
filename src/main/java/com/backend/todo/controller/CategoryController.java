@@ -95,6 +95,5 @@ public class CategoryController {
     public ResponseEntity<List<Category>> findByTitle(@RequestParam String title) {
         logger.info(String.format("Input arguments: %s", title));
         return ResponseEntity.ok(this.categoryService.findByTitle(title));
-
     }
 }
