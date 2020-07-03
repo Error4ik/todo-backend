@@ -37,42 +37,64 @@ public class CategoryController {
 
     @PostMapping("/add")
     public ResponseEntity<Category> addCategory(@NonNull Category category) {
+        logger.info(String.format("Input arguments: %s", category));
         if (category.getId() != null) {
-            return new ResponseEntity("The redundant param: id parameter must be null", HttpStatus.NOT_ACCEPTABLE);
+            logger.info("The redundant parameter: id must be null");
+            return new ResponseEntity("The redundant parameter: id must be null", HttpStatus.NOT_ACCEPTABLE);
         }
         if (category.getTitle() == null || category.getTitle().trim().isEmpty()) {
-            return new ResponseEntity("Missed parameters: title", HttpStatus.NOT_ACCEPTABLE);
+            logger.info("Missed parameters: title");
+            return new ResponseEntity("Missed parameter: title", HttpStatus.NOT_ACCEPTABLE);
         }
-        return ResponseEntity.ok(categoryService.addCategory(category));
+        Category cat = categoryService.addCategory(category);
+        logger.info(String.format("Save: %s", cat));
+        return ResponseEntity.ok(cat);
     }
 
     @PutMapping("/update")
     public ResponseEntity<Category> updateCategory(@NonNull Category category) {
+        logger.info(String.format("Input arguments: %s", category));
         if (category.getId() == null) {
-            return new ResponseEntity("Missed: the id parameter must not be null", HttpStatus.NOT_ACCEPTABLE);
+            logger.info("Missed parameter: id must not be null");
+            return new ResponseEntity("Missed parameter: id must not be null", HttpStatus.NOT_ACCEPTABLE);
         }
         if (category.getTitle() == null || category.getTitle().trim().isEmpty()) {
-            return new ResponseEntity("Missed parameters: title", HttpStatus.NOT_ACCEPTABLE);
+            logger.info("Missed parameters: title");
+            return new ResponseEntity("Missed parameter: title", HttpStatus.NOT_ACCEPTABLE);
         }
-        return ResponseEntity.ok(this.categoryService.updateCategory(category));
+        Category cat = this.categoryService.updateCategory(category);
+        logger.info(String.format("Update: %s", cat));
+        return ResponseEntity.ok(cat);
     }
 
     @GetMapping("/id/{id}")
     public ResponseEntity<Category> getCategoryById(@PathVariable UUID id) {
+        logger.info(String.format("Input arguments: %s", id));
         Optional<Category> category = this.categoryService.getCategoryById(id);
         if (!category.isPresent()) {
+            logger.info("There is no entity with this ID!");
             return new ResponseEntity("There is no entity with this ID!", HttpStatus.NOT_FOUND);
         }
+        logger.info(String.format("Return: %s", category.get()));
         return ResponseEntity.ok(category.get());
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity deleteCategory(@PathVariable UUID id) {
+        logger.info(String.format("Input arguments: %s", id));
         try {
             this.categoryService.deleteCategory(id);
         } catch (EmptyResultDataAccessException e) {
             this.logger.error("There is no entity with this ID!");
         }
+        logger.info(String.format("Category was deleted: %s", id));
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping("/find-by-title")
+    public ResponseEntity<List<Category>> findByTitle(@RequestParam String title) {
+        logger.info(String.format("Input arguments: %s", title));
+        return ResponseEntity.ok(this.categoryService.findByTitle(title));
+
     }
 }

@@ -37,43 +37,59 @@ public class PriorityController {
 
     @PostMapping("/add")
     public ResponseEntity<Priority> addPriority(@NonNull Priority priority) {
+        logger.info(String.format("Input arguments: %s", priority));
         if (priority.getId() != null) {
+            logger.info("The redundant param: id parameter must be null");
             return new ResponseEntity("The redundant param: id parameter must be null", HttpStatus.NOT_ACCEPTABLE);
         }
         if (priority.getTitle() == null || priority.getTitle().trim().isEmpty()) {
+            logger.info("Missed parameters: title");
             return new ResponseEntity("Missed parameters: title", HttpStatus.NOT_ACCEPTABLE);
         }
         if (priority.getColor() == null || priority.getColor().trim().isEmpty()) {
+            logger.info("Missed parameters: color");
             return new ResponseEntity("Missed parameters: color", HttpStatus.NOT_ACCEPTABLE);
         }
-        return ResponseEntity.ok(this.priorityService.addPriority(priority));
+        Priority p = this.priorityService.addPriority(priority);
+        logger.info(String.format("Save: %s", p));
+        return ResponseEntity.ok(p);
     }
 
     @PutMapping("/update")
     public ResponseEntity<Priority> updatePriority(@NonNull Priority priority) {
+        logger.info(String.format("Input arguments: %s", priority));
         if (priority.getId() == null) {
+            logger.info("Missed: the id parameter must not be null");
             return new ResponseEntity("Missed: the id parameter must not be null", HttpStatus.NOT_ACCEPTABLE);
         }
         if (priority.getTitle() == null || priority.getTitle().trim().isEmpty()) {
+            logger.info("Missed parameters: title");
             return new ResponseEntity("Missed parameters: title", HttpStatus.NOT_ACCEPTABLE);
         }
         if (priority.getColor() == null || priority.getColor().trim().isEmpty()) {
+            logger.info("Missed parameters: color");
             return new ResponseEntity("Missed parameters: color", HttpStatus.NOT_ACCEPTABLE);
         }
-        return ResponseEntity.ok(this.priorityService.updatePriority(priority));
+        Priority p = this.priorityService.updatePriority(priority);
+        logger.info(String.format("Update: %s", p));
+        return ResponseEntity.ok(p);
     }
 
     @GetMapping("/id/{id}")
     public ResponseEntity<Priority> getPriorityById(@PathVariable UUID id) {
+        logger.info(String.format("Input arguments: %s", id));
         Optional<Priority> priority = this.priorityService.getPriorityById(id);
         if (!priority.isPresent()) {
+            logger.info("There is no entity with this ID!");
             return new ResponseEntity("There is no entity with this ID!", HttpStatus.NOT_FOUND);
         }
+        logger.info(String.format("Return: %s", priority.get()));
         return ResponseEntity.ok(priority.get());
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity deletePriority(@PathVariable UUID id) {
+        logger.info(String.format("Input arguments: %s", id));
         try {
             this.priorityService.deletePriority(id);
         } catch (EmptyResultDataAccessException e) {

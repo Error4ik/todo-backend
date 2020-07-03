@@ -81,4 +81,9 @@ public class Category {
     public int hashCode() {
         return Objects.hash(getId());
     }
+
+    @Override
+    public String toString() {
+        return String.format("Category {id = %s, title = %s}", getId(), getTitle());
+    }
 }

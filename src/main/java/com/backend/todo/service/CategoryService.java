@@ -40,4 +40,8 @@ public class CategoryService {
     public void deleteCategory(UUID id) {
         this.categoryRepository.deleteById(id);
     }
+
+    public List<Category> findByTitle(String title) {
+        return this.categoryRepository.findByTitle(title);
+    }
 }
