@@ -21,8 +21,8 @@ public class PriorityService {
         this.priorityRepository = priorityRepository;
     }
 
-    public List<Priority> getPriorities() {
-        return this.priorityRepository.findAll();
+    public List<Priority> findAllByOrderByTitleAsc() {
+        return this.priorityRepository.findAllByOrderByTitleAsc();
     }
 
     public Priority addPriority(Priority priority) {

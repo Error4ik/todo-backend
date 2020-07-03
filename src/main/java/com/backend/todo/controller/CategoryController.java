@@ -22,7 +22,7 @@ import java.util.UUID;
 @RequestMapping("/category")
 public class CategoryController {
 
-    Logger logger = LoggerFactory.getLogger(CategoryController.class);
+    private Logger logger = LoggerFactory.getLogger(CategoryController.class);
 
     private CategoryService categoryService;
 
@@ -32,7 +32,7 @@ public class CategoryController {
 
     @RequestMapping("/categories")
     public List<Category> getCategories() {
-        return this.categoryService.getCategories();
+        return this.categoryService.findAllByOrderByTitleAsc();
     }
 
     @PostMapping("/add")

@@ -22,7 +22,7 @@ import java.util.UUID;
 @RequestMapping("/priority")
 public class PriorityController {
 
-    Logger logger = LoggerFactory.getLogger(PriorityController.class);
+    private Logger logger = LoggerFactory.getLogger(PriorityController.class);
 
     private PriorityService priorityService;
 
@@ -32,7 +32,7 @@ public class PriorityController {
 
     @RequestMapping("/priorities")
     public List<Priority> getPriorities() {
-        return this.priorityService.getPriorities();
+        return this.priorityService.findAllByOrderByTitleAsc();
     }
 
     @PostMapping("/add")

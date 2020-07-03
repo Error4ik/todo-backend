@@ -21,8 +21,8 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<Category> getCategories() {
-        return this.categoryRepository.findAll();
+    public List<Category> findAllByOrderByTitleAsc() {
+        return this.categoryRepository.findAllByOrderByTitleAsc();
     }
 
     public Category addCategory(Category category) {
