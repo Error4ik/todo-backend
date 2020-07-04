@@ -1,5 +1,6 @@
 package com.backend.todo.controller;
 
+import com.backend.todo.search.SearchParams;
 import com.backend.todo.domain.Task;
 import com.backend.todo.service.TaskService;
 import org.slf4j.Logger;
@@ -52,7 +53,7 @@ public class TaskController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity updateTask(@NonNull Task task) {
+    public ResponseEntity updateTask(@RequestBody @NonNull Task task) {
         logger.info(String.format("Input arguments: %s", task));
         if (task.getId() == null) {
             logger.info("Missed parameter: id must not be null");
@@ -89,5 +90,10 @@ public class TaskController {
         }
         logger.info(String.format("Task was deleted: %s", id));
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Task>> searchTasks(@RequestBody @NonNull SearchParams searchParams) {
+        return ResponseEntity.ok(this.taskService.searchTasks(searchParams));
     }
 }

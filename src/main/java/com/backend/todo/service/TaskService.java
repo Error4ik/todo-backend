@@ -1,5 +1,6 @@
 package com.backend.todo.service;
 
+import com.backend.todo.search.SearchParams;
 import com.backend.todo.domain.Task;
 import com.backend.todo.repository.TaskRepository;
 import org.springframework.stereotype.Service;
@@ -39,5 +40,13 @@ public class TaskService {
 
     public Task updateTask(Task task) {
         return this.taskRepository.save(task);
+    }
+
+    public List<Task> searchTasks(SearchParams searchParams) {
+        return this.taskRepository.searchTaskByParams(
+                searchParams.getTitle(),
+                searchParams.getCompleted(),
+                searchParams.getPriority(),
+                searchParams.getCategory());
     }
 }
