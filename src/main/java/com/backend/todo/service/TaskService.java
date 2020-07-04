@@ -5,6 +5,8 @@ import com.backend.todo.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * @author Alexey Voronin.
@@ -21,5 +23,21 @@ public class TaskService {
 
     public List<Task> getTasks() {
         return this.taskRepository.findAll();
+    }
+
+    public Task addTask(Task task) {
+        return this.taskRepository.save(task);
+    }
+
+    public Optional<Task> getTaskById(UUID id) {
+        return this.taskRepository.findById(id);
+    }
+
+    public void deleteTask(UUID id) {
+        this.taskRepository.deleteById(id);
+    }
+
+    public Task updateTask(Task task) {
+        return this.taskRepository.save(task);
     }
 }

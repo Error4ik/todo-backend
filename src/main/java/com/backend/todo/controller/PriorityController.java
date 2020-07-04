@@ -56,7 +56,7 @@ public class PriorityController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Priority> updatePriority(@NonNull Priority priority) {
+    public ResponseEntity updatePriority(@NonNull Priority priority) {
         logger.info(String.format("Input arguments: %s", priority));
         if (priority.getId() == null) {
             logger.info("Missed: the id parameter must not be null");
@@ -72,7 +72,7 @@ public class PriorityController {
         }
         Priority p = this.priorityService.updatePriority(priority);
         logger.info(String.format("Update: %s", p));
-        return ResponseEntity.ok(p);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping("/id/{id}")

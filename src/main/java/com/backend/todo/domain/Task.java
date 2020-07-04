@@ -28,11 +28,11 @@ public class Task {
     private Timestamp date;
 
     @ManyToOne
-    @JoinColumn(name = "priority_id")
+    @JoinColumn(name = "priority")
     private Priority priority;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category")
     private Category category;
 
     public Task() {

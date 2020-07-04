@@ -52,7 +52,7 @@ public class CategoryController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Category> updateCategory(@NonNull Category category) {
+    public ResponseEntity updateCategory(@NonNull Category category) {
         logger.info(String.format("Input arguments: %s", category));
         if (category.getId() == null) {
             logger.info("Missed parameter: id must not be null");
@@ -64,7 +64,7 @@ public class CategoryController {
         }
         Category cat = this.categoryService.updateCategory(category);
         logger.info(String.format("Update: %s", cat));
-        return ResponseEntity.ok(cat);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping("/id/{id}")
