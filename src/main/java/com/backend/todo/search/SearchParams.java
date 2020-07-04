@@ -12,6 +12,10 @@ public class SearchParams {
     private int completed;
     private UUID priority;
     private UUID category;
+    private Integer pageNumber;
+    private Integer pageLimit;
+    private String sortColumn;
+    private String sortDirection;
 
     public SearchParams() {
     }
@@ -46,6 +50,38 @@ public class SearchParams {
 
     public void setCategory(UUID category) {
         this.category = category;
+    }
+
+    public Integer getPageNumber() {
+        return pageNumber;
+    }
+
+    public void setPageNumber(Integer pageNumber) {
+        this.pageNumber = pageNumber;
+    }
+
+    public Integer getPageLimit() {
+        return pageLimit;
+    }
+
+    public void setPageLimit(Integer pageLimit) {
+        this.pageLimit = pageLimit;
+    }
+
+    public String getSortColumn() {
+        return sortColumn;
+    }
+
+    public void setSortColumn(String sortColumn) {
+        this.sortColumn = sortColumn;
+    }
+
+    public String getSortDirection() {
+        return sortDirection;
+    }
+
+    public void setSortDirection(String sortDirection) {
+        this.sortDirection = sortDirection;
     }
 
     @Override

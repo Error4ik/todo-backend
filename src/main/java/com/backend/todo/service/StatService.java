@@ -4,6 +4,7 @@ import com.backend.todo.domain.Stat;
 import com.backend.todo.repository.StatRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -11,6 +12,7 @@ import java.util.List;
  * @since 03.07.2020.
  */
 @Service
+@Transactional
 public class StatService {
 
     private StatRepository statRepository;

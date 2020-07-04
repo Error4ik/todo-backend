@@ -4,6 +4,7 @@ import com.backend.todo.domain.Category;
 import com.backend.todo.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -13,6 +14,7 @@ import java.util.UUID;
  * @since 30.06.2020.
  */
 @Service
+@Transactional
 public class CategoryService {
 
     private CategoryRepository categoryRepository;

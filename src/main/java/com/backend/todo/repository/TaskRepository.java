@@ -1,6 +1,8 @@
 package com.backend.todo.repository;
 
 import com.backend.todo.domain.Task;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,9 +23,10 @@ public interface TaskRepository extends JpaRepository<Task, UUID> {
             "and (:completed IS NULL OR t.completed = :completed)" +
             "and (CAST (:priority AS text) IS NULL OR t.priority.id = :priority)" +
             "and (CAST (:category AS text) IS NULL OR t.category.id = :category)")
-    List<Task> searchTaskByParams(
+    Page<Task> searchTaskByParams(
             @Param("title") String title,
             @Param("completed") int completed,
             @Param("priority") UUID priority,
-            @Param("category") UUID category);
+            @Param("category") UUID category,
+            Pageable pageable);
 }

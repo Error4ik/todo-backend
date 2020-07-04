@@ -1,11 +1,12 @@
 package com.backend.todo.controller;
 
-import com.backend.todo.search.SearchParams;
 import com.backend.todo.domain.Task;
+import com.backend.todo.search.SearchParams;
 import com.backend.todo.service.TaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
@@ -92,8 +93,8 @@ public class TaskController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<Task>> searchTasks(@RequestBody @NonNull SearchParams searchParams) {
+    @PostMapping("/search")
+    public ResponseEntity<Page<Task>> searchTasks(@RequestBody @NonNull SearchParams searchParams) {
         return ResponseEntity.ok(this.taskService.searchTasks(searchParams));
     }
 }
