@@ -35,8 +35,8 @@ public class CategoryController {
         return this.categoryService.findAllByOrderByTitleAsc();
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<Category> addCategory(@NonNull Category category) {
+    @RequestMapping("/add")
+    public ResponseEntity<Category> addCategory(@RequestBody @NonNull Category category) {
         logger.info(String.format("Input arguments: %s", category));
         if (category.getId() != null) {
             logger.info("The redundant parameter: id must be null");
@@ -51,8 +51,8 @@ public class CategoryController {
         return ResponseEntity.ok(cat);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity updateCategory(@NonNull Category category) {
+    @RequestMapping("/update")
+    public ResponseEntity updateCategory(@RequestBody @NonNull Category category) {
         logger.info(String.format("Input arguments: %s", category));
         if (category.getId() == null) {
             logger.info("Missed parameter: id must not be null");
@@ -67,7 +67,7 @@ public class CategoryController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @GetMapping("/id/{id}")
+    @RequestMapping("/id/{id}")
     public ResponseEntity<Category> getCategoryById(@PathVariable UUID id) {
         logger.info(String.format("Input arguments: %s", id));
         Optional<Category> category = this.categoryService.getCategoryById(id);
@@ -79,7 +79,7 @@ public class CategoryController {
         return ResponseEntity.ok(category.get());
     }
 
-    @DeleteMapping("/delete/{id}")
+    @RequestMapping("/delete/{id}")
     public ResponseEntity deleteCategory(@PathVariable UUID id) {
         logger.info(String.format("Input arguments: %s", id));
         try {
@@ -91,8 +91,8 @@ public class CategoryController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PostMapping("/find-by-title")
-    public ResponseEntity<List<Category>> findByTitle(@RequestParam String title) {
+    @RequestMapping("/find-by-title")
+    public ResponseEntity<List<Category>> findByTitle(@RequestBody(required = false) String title) {
         logger.info(String.format("Input arguments: %s", title));
         return ResponseEntity.ok(this.categoryService.findByTitle(title));
     }
