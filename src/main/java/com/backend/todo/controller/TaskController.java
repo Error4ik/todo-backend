@@ -37,7 +37,7 @@ public class TaskController {
         return this.taskService.getTasks();
     }
 
-    @PostMapping("/add")
+    @RequestMapping("/add")
     public ResponseEntity<Task> addTask(@RequestBody @NonNull Task task) {
         logger.info(String.format("Input arguments: %s", task));
         if (task.getId() != null) {
@@ -53,7 +53,7 @@ public class TaskController {
         return ResponseEntity.ok(t);
     }
 
-    @PostMapping("/update")
+    @RequestMapping("/update")
     public ResponseEntity updateTask(@RequestBody @NonNull Task task) {
         logger.info(String.format("Input arguments: %s", task));
         if (task.getId() == null) {
@@ -69,7 +69,7 @@ public class TaskController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @GetMapping("/id/{id}")
+    @RequestMapping("/id/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable UUID id) {
         logger.info(String.format("Input arguments: %s", id));
         Optional<Task> task = this.taskService.getTaskById(id);
@@ -81,7 +81,7 @@ public class TaskController {
         return ResponseEntity.ok(task.get());
     }
 
-    @DeleteMapping("/delete/{id}")
+    @RequestMapping("/delete/{id}")
     public ResponseEntity deleteTask(@PathVariable UUID id) {
         logger.info(String.format("Input arguments: %s", id));
         try {
@@ -93,7 +93,7 @@ public class TaskController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PostMapping("/search")
+    @RequestMapping("/search")
     public ResponseEntity<Page<Task>> searchTasks(@RequestBody @NonNull SearchParams searchParams) {
         return ResponseEntity.ok(this.taskService.searchTasks(searchParams));
     }

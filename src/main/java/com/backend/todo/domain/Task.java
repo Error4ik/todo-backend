@@ -6,7 +6,6 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- *
  * @author Alexey Voronin.
  * @since 26.06.2020.
  */
@@ -105,5 +104,17 @@ public class Task {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "id = %s, title = %s, completed = %s, date = %s, priority = %s, category = %s",
+                this.getId(),
+                this.getTitle(),
+                this.getCompleted(),
+                this.getDate(),
+                this.getPriority(),
+                this.getCategory());
     }
 }

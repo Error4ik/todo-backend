@@ -9,7 +9,7 @@ import java.util.UUID;
 public class SearchParams {
 
     private String title;
-    private int completed;
+    private Integer completed;
     private UUID priority;
     private UUID category;
     private Integer pageNumber;
@@ -28,11 +28,11 @@ public class SearchParams {
         this.title = title;
     }
 
-    public int getCompleted() {
+    public Integer getCompleted() {
         return completed;
     }
 
-    public void setCompleted(int completed) {
+    public void setCompleted(Integer completed) {
         this.completed = completed;
     }
 

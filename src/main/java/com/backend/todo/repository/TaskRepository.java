@@ -25,7 +25,7 @@ public interface TaskRepository extends JpaRepository<Task, UUID> {
             "and (CAST (:category AS text) IS NULL OR t.category.id = :category)")
     Page<Task> searchTaskByParams(
             @Param("title") String title,
-            @Param("completed") int completed,
+            @Param("completed") Integer completed,
             @Param("priority") UUID priority,
             @Param("category") UUID category,
             Pageable pageable);
