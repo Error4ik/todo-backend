@@ -35,8 +35,8 @@ public class PriorityController {
         return this.priorityService.findAllByOrderByTitleAsc();
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<Priority> addPriority(@NonNull Priority priority) {
+    @RequestMapping("/add")
+    public ResponseEntity<Priority> addPriority(@RequestBody @NonNull Priority priority) {
         logger.info(String.format("Input arguments: %s", priority));
         if (priority.getId() != null) {
             logger.info("The redundant param: id parameter must be null");
@@ -55,8 +55,8 @@ public class PriorityController {
         return ResponseEntity.ok(p);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity updatePriority(@NonNull Priority priority) {
+    @RequestMapping("/update")
+    public ResponseEntity updatePriority(@RequestBody @NonNull Priority priority) {
         logger.info(String.format("Input arguments: %s", priority));
         if (priority.getId() == null) {
             logger.info("Missed: the id parameter must not be null");
@@ -75,7 +75,7 @@ public class PriorityController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @GetMapping("/id/{id}")
+    @RequestMapping("/id/{id}")
     public ResponseEntity<Priority> getPriorityById(@PathVariable UUID id) {
         logger.info(String.format("Input arguments: %s", id));
         Optional<Priority> priority = this.priorityService.getPriorityById(id);
@@ -87,7 +87,7 @@ public class PriorityController {
         return ResponseEntity.ok(priority.get());
     }
 
-    @DeleteMapping("/delete/{id}")
+    @RequestMapping("/delete/{id}")
     public ResponseEntity deletePriority(@PathVariable UUID id) {
         logger.info(String.format("Input arguments: %s", id));
         try {
@@ -95,6 +95,7 @@ public class PriorityController {
         } catch (EmptyResultDataAccessException e) {
             this.logger.error("There is no entity with this ID!");
         }
+        logger.info(String.format("Task was deleted: %s", id));
         return new ResponseEntity(HttpStatus.OK);
     }
 }
