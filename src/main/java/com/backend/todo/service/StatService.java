@@ -1,27 +1,29 @@
 package com.backend.todo.service;
 
-import com.backend.todo.domain.Stat;
+import com.backend.todo.dto.StatReadDto;
+import com.backend.todo.mapper.StatReadMapper;
 import com.backend.todo.repository.StatRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Alexey Voronin.
  * @since 03.07.2020.
  */
 @Service
-@Transactional
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class StatService {
 
-    private StatRepository statRepository;
+    private final StatRepository statRepository;
+    private final StatReadMapper statReadMapper;
 
-    public StatService(StatRepository statRepository) {
-        this.statRepository = statRepository;
-    }
 
-    public List<Stat> getStats() {
-        return this.statRepository.findAll();
+    public List<StatReadDto> getStats() {
+        return this.statRepository.findAll().stream().map(statReadMapper::map).collect(Collectors.toList());
     }
 }

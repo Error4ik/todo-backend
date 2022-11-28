@@ -1,49 +1,75 @@
 package com.backend.todo.service;
 
-import com.backend.todo.domain.Category;
+import com.backend.todo.dto.CategoryCreateEditDto;
+import com.backend.todo.dto.CategoryReadDto;
+import com.backend.todo.mapper.CategoryCreateEditMapper;
+import com.backend.todo.mapper.CategoryReadMapper;
 import com.backend.todo.repository.CategoryRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * @author Alexey Voronin.
  * @since 30.06.2020.
  */
 @Service
-@Transactional
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CategoryService {
 
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
+    private final CategoryReadMapper categoryReadMapper;
+    private final CategoryCreateEditMapper categoryCreateEditMapper;
 
-    public CategoryService(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
+    public List<CategoryReadDto> findAllByOrderByTitleAsc() {
+        return categoryRepository.findAllByOrderByTitleAsc()
+                .stream()
+                .map(categoryReadMapper::map)
+                .collect(Collectors.toList());
     }
 
-    public List<Category> findAllByOrderByTitleAsc() {
-        return this.categoryRepository.findAllByOrderByTitleAsc();
+    @Transactional
+    public CategoryReadDto create(CategoryCreateEditDto categoryCreateEditDto) {
+        return Optional.of(categoryCreateEditDto)
+                .map(categoryCreateEditMapper::map)
+                .map(categoryRepository::save)
+                .map(categoryReadMapper::map)
+                .orElseThrow();
     }
 
-    public Category addCategory(Category category) {
-        return this.categoryRepository.save(category);
+    @Transactional
+    public Optional<CategoryReadDto> updateCategory(UUID id, CategoryCreateEditDto categoryCreateEditDto) {
+        return categoryRepository.findById(id)
+                .map(entity -> categoryCreateEditMapper.map(categoryCreateEditDto, entity))
+                .map(categoryRepository::save)
+                .map(categoryReadMapper::map);
     }
 
-    public Category updateCategory(Category category) {
-        return this.categoryRepository.save(category);
+    public Optional<CategoryReadDto> getCategoryById(UUID id) {
+        return categoryRepository.findById(id)
+                .map(categoryReadMapper::map);
     }
 
-    public Optional<Category> getCategoryById(UUID id) {
-        return this.categoryRepository.findById(id);
+    @Transactional
+    public boolean delete(UUID id) {
+        return categoryRepository.findById(id)
+                .map(entity -> {
+                    categoryRepository.delete(entity);
+                    categoryRepository.flush();
+                    return true;
+                }).orElse(false);
     }
 
-    public void deleteCategory(UUID id) {
-        this.categoryRepository.deleteById(id);
-    }
-
-    public List<Category> findByTitle(String title) {
-        return this.categoryRepository.findByTitle(title);
+    public List<CategoryReadDto> findByTitle(String title) {
+        return categoryRepository.findByTitle(title)
+                .stream()
+                .map(categoryReadMapper::map)
+                .collect(Collectors.toList());
     }
 }
