@@ -1,18 +1,22 @@
 package com.backend.todo.controller;
 
-import com.backend.todo.domain.Priority;
+import com.backend.todo.dto.PriorityCreateEditDto;
+import com.backend.todo.dto.PriorityReadDto;
 import com.backend.todo.service.PriorityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.NonNull;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
+
+import static org.springframework.http.ResponseEntity.*;
 
 /**
  * @author Alexey Voronin.
@@ -31,71 +35,58 @@ public class PriorityController {
     }
 
     @RequestMapping("/priorities")
-    public List<Priority> getPriorities() {
-        return this.priorityService.findAllByOrderByTitleAsc();
+    public List<PriorityReadDto> findAllByOrderByTitleAsc() {
+        return priorityService.findAllByOrderByTitleAsc();
     }
 
     @RequestMapping("/add")
-    public ResponseEntity<Priority> addPriority(@RequestBody @NonNull Priority priority) {
-        logger.info(String.format("Input arguments: %s", priority));
-        if (priority.getId() != null) {
-            logger.info("The redundant param: id parameter must be null");
-            return new ResponseEntity("The redundant param: id parameter must be null", HttpStatus.NOT_ACCEPTABLE);
-        }
-        if (priority.getTitle() == null || priority.getTitle().trim().isEmpty()) {
+    public ResponseEntity<PriorityReadDto> create(@RequestBody PriorityCreateEditDto priorityCreateEditDto) {
+        logger.info(String.format("Input arguments: %s", priorityCreateEditDto));
+        if (priorityCreateEditDto.getTitle() == null || priorityCreateEditDto.getTitle().trim().isEmpty()) {
             logger.info("Missed parameters: title");
             return new ResponseEntity("Missed parameters: title", HttpStatus.NOT_ACCEPTABLE);
         }
-        if (priority.getColor() == null || priority.getColor().trim().isEmpty()) {
+        if (priorityCreateEditDto.getColor() == null || priorityCreateEditDto.getColor().trim().isEmpty()) {
             logger.info("Missed parameters: color");
             return new ResponseEntity("Missed parameters: color", HttpStatus.NOT_ACCEPTABLE);
         }
-        Priority p = this.priorityService.addPriority(priority);
+        PriorityReadDto p = priorityService.create(priorityCreateEditDto);
         logger.info(String.format("Save: %s", p));
-        return ResponseEntity.ok(p);
+        return ok(p);
     }
 
-    @RequestMapping("/update")
-    public ResponseEntity updatePriority(@RequestBody @NonNull Priority priority) {
-        logger.info(String.format("Input arguments: %s", priority));
-        if (priority.getId() == null) {
-            logger.info("Missed: the id parameter must not be null");
-            return new ResponseEntity("Missed: the id parameter must not be null", HttpStatus.NOT_ACCEPTABLE);
-        }
-        if (priority.getTitle() == null || priority.getTitle().trim().isEmpty()) {
+    @RequestMapping("/update/{id}")
+    public ResponseEntity<PriorityReadDto> update(@PathVariable UUID id, @RequestBody PriorityCreateEditDto priorityCreateEditDto) {
+        logger.info(String.format("Input arguments: %s", priorityCreateEditDto));
+        if (priorityCreateEditDto.getTitle() == null || priorityCreateEditDto.getTitle().trim().isEmpty()) {
             logger.info("Missed parameters: title");
             return new ResponseEntity("Missed parameters: title", HttpStatus.NOT_ACCEPTABLE);
         }
-        if (priority.getColor() == null || priority.getColor().trim().isEmpty()) {
+        if (priorityCreateEditDto.getColor() == null || priorityCreateEditDto.getColor().trim().isEmpty()) {
             logger.info("Missed parameters: color");
             return new ResponseEntity("Missed parameters: color", HttpStatus.NOT_ACCEPTABLE);
         }
-        Priority p = this.priorityService.updatePriority(priority);
-        logger.info(String.format("Update: %s", p));
-        return new ResponseEntity(HttpStatus.OK);
+        PriorityReadDto priorityReadDto = priorityService.update(id, priorityCreateEditDto)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        ;
+        logger.info(String.format("Update: %s", priorityReadDto));
+        return ok(priorityReadDto);
     }
 
     @RequestMapping("/id/{id}")
-    public ResponseEntity<Priority> getPriorityById(@PathVariable UUID id) {
+    public ResponseEntity<PriorityReadDto> getPriorityById(@PathVariable UUID id) {
         logger.info(String.format("Input arguments: %s", id));
-        Optional<Priority> priority = this.priorityService.getPriorityById(id);
-        if (!priority.isPresent()) {
-            logger.info("There is no entity with this ID!");
-            return new ResponseEntity("There is no entity with this ID!", HttpStatus.NOT_FOUND);
-        }
-        logger.info(String.format("Return: %s", priority.get()));
-        return ResponseEntity.ok(priority.get());
+        PriorityReadDto priorityReadDto = priorityService.getPriorityById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        logger.info(String.format("Return: %s", priorityReadDto));
+        return ok(priorityReadDto);
     }
 
     @RequestMapping("/delete/{id}")
-    public ResponseEntity deletePriority(@PathVariable UUID id) {
+    public ResponseEntity<?> deletePriority(@PathVariable UUID id) {
         logger.info(String.format("Input arguments: %s", id));
-        try {
-            this.priorityService.deletePriority(id);
-        } catch (EmptyResultDataAccessException e) {
-            this.logger.error("There is no entity with this ID!");
-        }
-        logger.info(String.format("Task was deleted: %s", id));
-        return new ResponseEntity(HttpStatus.OK);
+        return priorityService.deletePriority(id)
+                ? noContent().build()
+                : notFound().build();
     }
 }

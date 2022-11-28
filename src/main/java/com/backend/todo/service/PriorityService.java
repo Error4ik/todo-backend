@@ -1,45 +1,68 @@
 package com.backend.todo.service;
 
-import com.backend.todo.domain.Priority;
+import com.backend.todo.dto.PriorityCreateEditDto;
+import com.backend.todo.dto.PriorityReadDto;
+import com.backend.todo.mapper.PriorityCreateEditMapper;
+import com.backend.todo.mapper.PriorityReadMapper;
 import com.backend.todo.repository.PriorityRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * @author Alexey Voronin.
  * @since 30.06.2020.
  */
 @Service
-@Transactional
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class PriorityService {
 
-    private PriorityRepository priorityRepository;
+    private final PriorityRepository priorityRepository;
+    private final PriorityReadMapper priorityReadMapper;
+    private final PriorityCreateEditMapper priorityCreateEditMapper;
 
-    public PriorityService(PriorityRepository priorityRepository) {
-        this.priorityRepository = priorityRepository;
+    public List<PriorityReadDto> findAllByOrderByTitleAsc() {
+        return priorityRepository.findAllByOrderByTitleAsc()
+                .stream()
+                .map(priorityReadMapper::map)
+                .collect(Collectors.toList());
     }
 
-    public List<Priority> findAllByOrderByTitleAsc() {
-        return this.priorityRepository.findAllByOrderByTitleAsc();
+    @Transactional
+    public PriorityReadDto create(PriorityCreateEditDto priorityCreateEditDto) {
+        return Optional.of(priorityCreateEditDto)
+                .map(priorityCreateEditMapper::map)
+                .map(priorityRepository::save)
+                .map(priorityReadMapper::map)
+                .orElseThrow();
     }
 
-    public Priority addPriority(Priority priority) {
-        return this.priorityRepository.save(priority);
+    @Transactional
+    public Optional<PriorityReadDto> update(UUID id, PriorityCreateEditDto priorityCreateEditDto) {
+        return priorityRepository.findById(id)
+                .map(entity -> priorityCreateEditMapper.map(priorityCreateEditDto, entity))
+                .map(priorityRepository::save)
+                .map(priorityReadMapper::map);
     }
 
-    public Priority updatePriority(Priority priority) {
-        return this.priorityRepository.save(priority);
+    public Optional<PriorityReadDto> getPriorityById(UUID id) {
+        return priorityRepository.findById(id)
+                .map(priorityReadMapper::map);
     }
 
-    public Optional<Priority> getPriorityById(UUID id) {
-        return this.priorityRepository.findById(id);
-    }
-
-    public void deletePriority(UUID id) {
-        this.priorityRepository.deleteById(id);
+    @Transactional
+    public boolean deletePriority(UUID id) {
+        return priorityRepository.findById(id)
+                .map(entity -> {
+                    priorityRepository.delete(entity);
+                    priorityRepository.flush();
+                    return true;
+                }).orElse(false);
     }
 }

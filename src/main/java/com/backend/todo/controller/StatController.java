@@ -1,6 +1,6 @@
 package com.backend.todo.controller;
 
-import com.backend.todo.domain.Stat;
+import com.backend.todo.dto.StatReadDto;
 import com.backend.todo.service.StatService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+
+import static org.springframework.http.ResponseEntity.*;
 
 /**
  * @author Alexey Voronin.
@@ -28,7 +30,7 @@ public class StatController {
     }
 
     @GetMapping("/stats")
-    public ResponseEntity<List<Stat>> getStats() {
-        return ResponseEntity.ok(this.statService.getStats());
+    public ResponseEntity<List<StatReadDto>> getStats() {
+        return ok(this.statService.getStats());
     }
 }
