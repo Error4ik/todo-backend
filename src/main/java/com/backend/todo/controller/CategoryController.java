@@ -20,7 +20,7 @@ import static org.springframework.http.ResponseEntity.*;
  * @since 30.06.2020.
  */
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/api/v1/categories")
 public class CategoryController {
 
     private Logger logger = LoggerFactory.getLogger(CategoryController.class);
@@ -31,12 +31,13 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @RequestMapping("/categories")
+    @GetMapping
     public List<CategoryReadDto> findAllByOrderByTitleAsc() {
         return categoryService.findAllByOrderByTitleAsc();
     }
 
-    @RequestMapping("/add")
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<CategoryReadDto> create(@RequestBody CategoryCreateEditDto categoryCreateEditDto) {
         logger.info(String.format("Input arguments: %s", categoryCreateEditDto));
 
@@ -49,7 +50,7 @@ public class CategoryController {
         return ok(categoryReadDto);
     }
 
-    @RequestMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<CategoryReadDto> update(@PathVariable UUID id, @RequestBody CategoryCreateEditDto categoryCreateEditDto) {
         logger.info(String.format("Input arguments: %s", categoryCreateEditDto));
 
@@ -57,31 +58,31 @@ public class CategoryController {
             logger.info("Missed parameters: title");
             return new ResponseEntity("Missed parameter: title", HttpStatus.NOT_ACCEPTABLE);
         }
-        CategoryReadDto categoryReadDto = categoryService.updateCategory(id, categoryCreateEditDto)
+        CategoryReadDto categoryReadDto = categoryService.update(id, categoryCreateEditDto)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         ;
         logger.info(String.format("Update: %s", categoryReadDto));
         return ok(categoryReadDto);
     }
 
-    @RequestMapping("/id/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<CategoryReadDto> getById(@PathVariable UUID id) {
         logger.info(String.format("Input arguments: %s", id));
-        CategoryReadDto categoryReadDto = categoryService.getCategoryById(id)
+        CategoryReadDto categoryReadDto = categoryService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         logger.info(String.format("Return: %s", categoryReadDto));
         return ok(categoryReadDto);
     }
 
-    @RequestMapping("/delete/{id}")
-    public ResponseEntity<?> deleteCategory(@PathVariable UUID id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable UUID id) {
         return categoryService.delete(id)
                 ? noContent().build()
                 : notFound().build();
     }
 
-    @RequestMapping("/find-by-title")
+    @GetMapping("/find-by-title")
     public ResponseEntity<List<CategoryReadDto>> findByTitle(@RequestParam String title) {
         logger.info(String.format("Input arguments: %s", title));
         return ok(categoryService.findByTitle(title));

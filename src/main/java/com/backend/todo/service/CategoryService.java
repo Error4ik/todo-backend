@@ -44,14 +44,14 @@ public class CategoryService {
     }
 
     @Transactional
-    public Optional<CategoryReadDto> updateCategory(UUID id, CategoryCreateEditDto categoryCreateEditDto) {
+    public Optional<CategoryReadDto> update(UUID id, CategoryCreateEditDto categoryCreateEditDto) {
         return categoryRepository.findById(id)
                 .map(entity -> categoryCreateEditMapper.map(categoryCreateEditDto, entity))
                 .map(categoryRepository::save)
                 .map(categoryReadMapper::map);
     }
 
-    public Optional<CategoryReadDto> getCategoryById(UUID id) {
+    public Optional<CategoryReadDto> findById(UUID id) {
         return categoryRepository.findById(id)
                 .map(categoryReadMapper::map);
     }

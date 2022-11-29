@@ -51,13 +51,13 @@ public class PriorityService {
                 .map(priorityReadMapper::map);
     }
 
-    public Optional<PriorityReadDto> getPriorityById(UUID id) {
+    public Optional<PriorityReadDto> findById(UUID id) {
         return priorityRepository.findById(id)
                 .map(priorityReadMapper::map);
     }
 
     @Transactional
-    public boolean deletePriority(UUID id) {
+    public boolean delete(UUID id) {
         return priorityRepository.findById(id)
                 .map(entity -> {
                     priorityRepository.delete(entity);

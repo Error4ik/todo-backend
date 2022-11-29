@@ -23,7 +23,7 @@ public class StatService {
     private final StatReadMapper statReadMapper;
 
 
-    public List<StatReadDto> getStats() {
+    public List<StatReadDto> findAll() {
         return this.statRepository.findAll().stream().map(statReadMapper::map).collect(Collectors.toList());
     }
 }

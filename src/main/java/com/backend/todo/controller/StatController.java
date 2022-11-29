@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static org.springframework.http.ResponseEntity.*;
+import static org.springframework.http.ResponseEntity.ok;
 
 /**
  * @author Alexey Voronin.
  * @since 03.07.2020.
  */
 @RestController
-@RequestMapping("/stat")
+@RequestMapping("/api/v1/stats")
 public class StatController {
 
     private Logger logger = LoggerFactory.getLogger(StatController.class);
@@ -29,8 +29,8 @@ public class StatController {
         this.statService = statService;
     }
 
-    @GetMapping("/stats")
-    public ResponseEntity<List<StatReadDto>> getStats() {
-        return ok(this.statService.getStats());
+    @GetMapping
+    public ResponseEntity<List<StatReadDto>> findAll() {
+        return ok(this.statService.findAll());
     }
 }

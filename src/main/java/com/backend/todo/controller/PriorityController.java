@@ -7,10 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -23,7 +20,7 @@ import static org.springframework.http.ResponseEntity.*;
  * @since 30.06.2020.
  */
 @RestController
-@RequestMapping("/priority")
+@RequestMapping("/api/v1/priorities")
 public class PriorityController {
 
     private Logger logger = LoggerFactory.getLogger(PriorityController.class);
@@ -34,12 +31,13 @@ public class PriorityController {
         this.priorityService = priorityService;
     }
 
-    @RequestMapping("/priorities")
+    @GetMapping
     public List<PriorityReadDto> findAllByOrderByTitleAsc() {
         return priorityService.findAllByOrderByTitleAsc();
     }
 
-    @RequestMapping("/add")
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<PriorityReadDto> create(@RequestBody PriorityCreateEditDto priorityCreateEditDto) {
         logger.info(String.format("Input arguments: %s", priorityCreateEditDto));
         if (priorityCreateEditDto.getTitle() == null || priorityCreateEditDto.getTitle().trim().isEmpty()) {
@@ -55,7 +53,7 @@ public class PriorityController {
         return ok(p);
     }
 
-    @RequestMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<PriorityReadDto> update(@PathVariable UUID id, @RequestBody PriorityCreateEditDto priorityCreateEditDto) {
         logger.info(String.format("Input arguments: %s", priorityCreateEditDto));
         if (priorityCreateEditDto.getTitle() == null || priorityCreateEditDto.getTitle().trim().isEmpty()) {
@@ -73,19 +71,19 @@ public class PriorityController {
         return ok(priorityReadDto);
     }
 
-    @RequestMapping("/id/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<PriorityReadDto> getPriorityById(@PathVariable UUID id) {
         logger.info(String.format("Input arguments: %s", id));
-        PriorityReadDto priorityReadDto = priorityService.getPriorityById(id)
+        PriorityReadDto priorityReadDto = priorityService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         logger.info(String.format("Return: %s", priorityReadDto));
         return ok(priorityReadDto);
     }
 
-    @RequestMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePriority(@PathVariable UUID id) {
         logger.info(String.format("Input arguments: %s", id));
-        return priorityService.deletePriority(id)
+        return priorityService.delete(id)
                 ? noContent().build()
                 : notFound().build();
     }

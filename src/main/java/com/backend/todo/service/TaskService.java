@@ -47,7 +47,7 @@ public class TaskService {
                 .orElseThrow();
     }
 
-    public Optional<TaskReadDto> getTaskById(UUID id) {
+    public Optional<TaskReadDto> findById(UUID id) {
         return taskRepository.findById(id)
                 .map(taskReadMapper::map);
     }
@@ -64,14 +64,14 @@ public class TaskService {
     }
 
     @Transactional
-    public Optional<TaskReadDto> updateTask(UUID id, TaskCreateEditDto taskCreateEditDto) {
+    public Optional<TaskReadDto> update(UUID id, TaskCreateEditDto taskCreateEditDto) {
         return taskRepository.findById(id)
                 .map(entity -> taskCreateEditMapper.map(taskCreateEditDto, entity))
                 .map(taskRepository::save)
                 .map(taskReadMapper::map);
     }
 
-    public Page<TaskReadDto> searchTasks(SearchParams param) {
+    public Page<TaskReadDto> search(SearchParams param) {
         String sortColumn = param.getSortColumn() == null ||
                 param.getSortColumn().trim().equals("") ?
                 "title" :

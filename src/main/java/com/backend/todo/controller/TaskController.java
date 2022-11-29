@@ -10,10 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -26,7 +23,7 @@ import static org.springframework.http.ResponseEntity.*;
  * @since 30.06.2020.
  */
 @RestController
-@RequestMapping("/task")
+@RequestMapping("/api/v1/tasks")
 public class TaskController {
 
     private Logger logger = LoggerFactory.getLogger(TaskController.class);
@@ -37,18 +34,19 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    @RequestMapping("/tasks")
-    public List<TaskReadDto> getTasks() {
+    @GetMapping
+    public List<TaskReadDto> findAll() {
         return this.taskService.findAll();
     }
 
-    @RequestMapping("/add")
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<TaskReadDto> create(@RequestBody TaskCreateEditDto taskCreateEditDto) {
         return ok(taskService.create(taskCreateEditDto));
     }
 
-    @RequestMapping("/{id}")
-    public ResponseEntity<TaskReadDto> updateTask(@PathVariable("id") UUID id, @RequestBody TaskCreateEditDto taskCreateEditDto) {
+    @PutMapping("/{id}")
+    public ResponseEntity<TaskReadDto> update(@PathVariable("id") UUID id, @RequestBody TaskCreateEditDto taskCreateEditDto) {
         logger.info(String.format("Input arguments: %s", taskCreateEditDto));
         if (id == null) {
             logger.info("Missed parameter: id must not be null");
@@ -58,30 +56,30 @@ public class TaskController {
             logger.info("Missed parameters: title");
             return new ResponseEntity("Missed parameter: title", HttpStatus.NOT_ACCEPTABLE);
         }
-        TaskReadDto taskReadDto = this.taskService.updateTask(id, taskCreateEditDto)
+        TaskReadDto taskReadDto = this.taskService.update(id, taskCreateEditDto)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         logger.info(String.format("Update: %s", taskReadDto));
         return ok(taskReadDto);
     }
 
-    @RequestMapping("/id/{id}")
-    public ResponseEntity<TaskReadDto> getById(@PathVariable UUID id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<TaskReadDto> findById(@PathVariable UUID id) {
         logger.info(String.format("Input arguments: %s", id));
-        TaskReadDto taskReadDto = this.taskService.getTaskById(id)
+        TaskReadDto taskReadDto = this.taskService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         logger.info(String.format("Return: %s", taskReadDto));
         return ok(taskReadDto);
     }
 
-    @RequestMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable UUID id) {
         return taskService.deleteTask(id)
                 ? noContent().build()
                 : notFound().build();
     }
 
-    @RequestMapping("/search")
-    public ResponseEntity<Page<TaskReadDto>> searchTasks(@RequestBody @NonNull SearchParams searchParams) {
-        return ok(taskService.searchTasks(searchParams));
+    @GetMapping("/search")
+    public ResponseEntity<Page<TaskReadDto>> search(@RequestBody @NonNull SearchParams searchParams) {
+        return ok(taskService.search(searchParams));
     }
 }
