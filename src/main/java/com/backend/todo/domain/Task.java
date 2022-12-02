@@ -3,7 +3,7 @@ package com.backend.todo.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.UUID;
 
 /**
@@ -31,7 +31,7 @@ public class Task {
 
     private int completed;
 
-    private Timestamp date;
+    private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name = "priority")

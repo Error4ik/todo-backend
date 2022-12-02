@@ -36,7 +36,7 @@ CREATE TABLE tasks
     id        UUID PRIMARY KEY      DEFAULT gen_random_uuid(),
     title     VARCHAR(255) NOT NULL default '',
     completed INTEGER      NOT NULL default 0,
-    date      TIMESTAMP             DEFAULT now() NOT NULL,
+    date      DATE,
     priority  UUID,
     category  UUID,
 

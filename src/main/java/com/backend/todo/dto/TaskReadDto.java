@@ -2,7 +2,7 @@ package com.backend.todo.dto;
 
 import lombok.Value;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.UUID;
 
 /**
@@ -17,7 +17,7 @@ public class TaskReadDto {
     UUID id;
     String title;
     int completed;
-    Timestamp date;
+    LocalDate date;
     PriorityReadDto priority;
     CategoryReadDto category;
 }
