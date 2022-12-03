@@ -100,7 +100,7 @@ public class TaskServiceTest {
     public void deleteWithTheCorrectID() {
         when(taskRepository.findById(any())).thenReturn(Optional.of(TASK));
 
-        boolean actualResult = taskService.deleteTask(TASK_ID);
+        boolean actualResult = taskService.delete(TASK_ID);
         assertTrue(actualResult);
 
         verify(taskRepository, times(1)).findById(any());
@@ -111,7 +111,7 @@ public class TaskServiceTest {
     public void deleteWithTheInCorrectID() {
         when(taskRepository.findById(any())).thenReturn(Optional.empty());
 
-        boolean actualResult = taskService.deleteTask(TASK_ID);
+        boolean actualResult = taskService.delete(TASK_ID);
         assertFalse(actualResult);
 
         verify(taskRepository, times(1)).findById(any());

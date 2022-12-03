@@ -73,7 +73,7 @@ public class TaskController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable UUID id) {
-        return taskService.deleteTask(id)
+        return taskService.delete(id)
                 ? noContent().build()
                 : notFound().build();
     }

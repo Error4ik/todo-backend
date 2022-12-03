@@ -53,7 +53,7 @@ public class TaskService {
     }
 
     @Transactional
-    public boolean deleteTask(UUID id) {
+    public boolean delete(UUID id) {
         return taskRepository.findById(id)
                 .map(entity -> {
                     taskRepository.delete(entity);
