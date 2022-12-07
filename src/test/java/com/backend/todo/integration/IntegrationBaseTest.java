@@ -4,6 +4,7 @@ import com.backend.todo.integration.annotation.IT;
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 /**
@@ -13,6 +14,9 @@ import org.testcontainers.containers.PostgreSQLContainer;
  * @since 06.12.2022.
  */
 @IT
+@Sql({
+        "classpath:sql/data.sql"
+})
 public class IntegrationBaseTest {
 
     private final static PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:14.2");
