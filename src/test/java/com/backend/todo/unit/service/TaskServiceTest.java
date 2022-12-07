@@ -121,7 +121,7 @@ public class TaskServiceTest {
     public void update() {
         when(taskRepository.findById(any())).thenReturn(Optional.of(TASK));
         when(taskCreateEditMapper.map(any(), any())).thenReturn(TASK);
-        when(taskRepository.save(any())).thenReturn(TASK);
+        when(taskRepository.saveAndFlush(any())).thenReturn(TASK);
         when(taskReadMapper.map(any())).
                 thenReturn(new TaskReadDto(TASK_ID, null, 0, null, null, null));
 
@@ -132,7 +132,7 @@ public class TaskServiceTest {
         actualResult.ifPresent(result -> assertEquals(TASK_ID, result.getId()));
         verify(taskRepository, times(1)).findById(any());
         verify(taskCreateEditMapper, times(1)).map(any(), any());
-        verify(taskRepository, times(1)).save(any());
+        verify(taskRepository, times(1)).saveAndFlush(any());
         verify(taskReadMapper, times(1)).map(any());
     }
 }

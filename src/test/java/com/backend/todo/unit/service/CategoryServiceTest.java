@@ -115,7 +115,7 @@ public class CategoryServiceTest {
     public void update() {
         when(categoryRepository.findById(any())).thenReturn(Optional.of(CATEGORY));
         when(categoryCreateEditMapper.map(any(), any())).thenReturn(CATEGORY);
-        when(categoryRepository.save(any())).thenReturn(CATEGORY);
+        when(categoryRepository.saveAndFlush(any())).thenReturn(CATEGORY);
         when(categoryReadMapper.map(any())).
                 thenReturn(new CategoryReadDto(CATEGORY_ID, "test", 0, 0));
 
@@ -126,7 +126,7 @@ public class CategoryServiceTest {
         actualResult.ifPresent(result -> assertEquals(CATEGORY_ID, result.getId()));
         verify(categoryRepository, times(1)).findById(any());
         verify(categoryCreateEditMapper, times(1)).map(any(), any());
-        verify(categoryRepository, times(1)).save(any());
+        verify(categoryRepository, times(1)).saveAndFlush(any());
         verify(categoryReadMapper, times(1)).map(any());
     }
 

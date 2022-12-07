@@ -114,7 +114,7 @@ public class PriorityServiceTest {
     public void update() {
         when(priorityRepository.findById(any())).thenReturn(Optional.of(PRIORITY));
         when(priorityCreateEditMapper.map(any(), any())).thenReturn(PRIORITY);
-        when(priorityRepository.save(any())).thenReturn(PRIORITY);
+        when(priorityRepository.saveAndFlush(any())).thenReturn(PRIORITY);
         when(priorityReadMapper.map(any())).
                 thenReturn(new PriorityReadDto(PRIORITY_ID, "test", "test"));
 
@@ -125,7 +125,7 @@ public class PriorityServiceTest {
         actualResult.ifPresent(result -> assertEquals(PRIORITY_ID, result.getId()));
         verify(priorityRepository, times(1)).findById(any());
         verify(priorityCreateEditMapper, times(1)).map(any(), any());
-        verify(priorityRepository, times(1)).save(any());
+        verify(priorityRepository, times(1)).saveAndFlush(any());
         verify(priorityReadMapper, times(1)).map(any());
     }
 }
