@@ -47,7 +47,7 @@ public class PriorityService {
     public Optional<PriorityReadDto> update(UUID id, PriorityCreateEditDto priorityCreateEditDto) {
         return priorityRepository.findById(id)
                 .map(entity -> priorityCreateEditMapper.map(priorityCreateEditDto, entity))
-                .map(priorityRepository::save)
+                .map(priorityRepository::saveAndFlush)
                 .map(priorityReadMapper::map);
     }
 

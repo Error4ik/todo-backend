@@ -47,7 +47,7 @@ public class CategoryService {
     public Optional<CategoryReadDto> update(UUID id, CategoryCreateEditDto categoryCreateEditDto) {
         return categoryRepository.findById(id)
                 .map(entity -> categoryCreateEditMapper.map(categoryCreateEditDto, entity))
-                .map(categoryRepository::save)
+                .map(categoryRepository::saveAndFlush)
                 .map(categoryReadMapper::map);
     }
 
