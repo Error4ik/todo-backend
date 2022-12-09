@@ -58,15 +58,16 @@ public class CategoryController {
             logger.info("Missed parameters: title");
             return new ResponseEntity("Missed parameter: title", HttpStatus.NOT_ACCEPTABLE);
         }
+
         CategoryReadDto categoryReadDto = categoryService.update(id, categoryCreateEditDto)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        ;
+
         logger.info(String.format("Update: %s", categoryReadDto));
         return ok(categoryReadDto);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CategoryReadDto> getById(@PathVariable UUID id) {
+    public ResponseEntity<CategoryReadDto> findById(@PathVariable UUID id) {
         logger.info(String.format("Input arguments: %s", id));
         CategoryReadDto categoryReadDto = categoryService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));

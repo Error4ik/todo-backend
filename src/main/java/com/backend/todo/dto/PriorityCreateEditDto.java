@@ -1,6 +1,7 @@
 package com.backend.todo.dto;
 
 import lombok.Value;
+import lombok.experimental.FieldNameConstants;
 
 /**
  * TODO: comment.
@@ -9,6 +10,7 @@ import lombok.Value;
  * @since 27.11.2022.
  */
 @Value
+@FieldNameConstants
 public class PriorityCreateEditDto {
 
     String title;

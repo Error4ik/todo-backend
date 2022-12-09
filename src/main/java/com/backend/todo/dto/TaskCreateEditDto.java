@@ -1,6 +1,7 @@
 package com.backend.todo.dto;
 
 import lombok.Value;
+import lombok.experimental.FieldNameConstants;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -12,6 +13,7 @@ import java.util.UUID;
  * @since 14.11.2022.
  */
 @Value
+@FieldNameConstants
 public class TaskCreateEditDto {
 
     String title;
