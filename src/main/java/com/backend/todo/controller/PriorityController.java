@@ -66,13 +66,13 @@ public class PriorityController {
         }
         PriorityReadDto priorityReadDto = priorityService.update(id, priorityCreateEditDto)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        ;
+
         logger.info(String.format("Update: %s", priorityReadDto));
         return ok(priorityReadDto);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PriorityReadDto> getPriorityById(@PathVariable UUID id) {
+    public ResponseEntity<PriorityReadDto> findById(@PathVariable UUID id) {
         logger.info(String.format("Input arguments: %s", id));
         PriorityReadDto priorityReadDto = priorityService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -81,7 +81,7 @@ public class PriorityController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePriority(@PathVariable UUID id) {
+    public ResponseEntity<?> delete(@PathVariable UUID id) {
         logger.info(String.format("Input arguments: %s", id));
         return priorityService.delete(id)
                 ? noContent().build()
