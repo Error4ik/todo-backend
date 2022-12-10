@@ -48,10 +48,6 @@ public class TaskController {
     @PutMapping("/{id}")
     public ResponseEntity<TaskReadDto> update(@PathVariable("id") UUID id, @RequestBody TaskCreateEditDto taskCreateEditDto) {
         logger.info(String.format("Input arguments: %s", taskCreateEditDto));
-        if (id == null) {
-            logger.info("Missed parameter: id must not be null");
-            return new ResponseEntity("Missed parameter: id must not be null", HttpStatus.NOT_ACCEPTABLE);
-        }
         if (taskCreateEditDto.getTitle() == null || taskCreateEditDto.getTitle().trim().isEmpty()) {
             logger.info("Missed parameters: title");
             return new ResponseEntity("Missed parameter: title", HttpStatus.NOT_ACCEPTABLE);
