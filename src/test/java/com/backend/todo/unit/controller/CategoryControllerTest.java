@@ -3,7 +3,6 @@ package com.backend.todo.unit.controller;
 import com.backend.todo.controller.CategoryController;
 import com.backend.todo.dto.CategoryCreateEditDto;
 import com.backend.todo.dto.CategoryReadDto;
-import com.backend.todo.repository.CategoryRepository;
 import com.backend.todo.service.CategoryService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
