@@ -19,7 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity(name = "priorities")
-public class Priority {
+public class Priority extends AuditingEntity {
 
     /**
      * Id.

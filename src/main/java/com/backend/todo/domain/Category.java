@@ -16,7 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity(name = "categories")
-public class Category {
+public class Category extends AuditingEntity {
 
     /**
      * Id.

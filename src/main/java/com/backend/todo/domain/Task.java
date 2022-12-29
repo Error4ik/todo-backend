@@ -17,7 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity(name = "tasks")
-public class Task {
+public class Task extends AuditingEntity {
 
     /**
      * Id.
