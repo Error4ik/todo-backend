@@ -13,8 +13,6 @@ import javax.persistence.MappedSuperclass;
 import java.time.Instant;
 
 /**
- * TODO: comment.
- *
  * @author Alexey Voronin.
  * @since 29.12.2022.
  */
