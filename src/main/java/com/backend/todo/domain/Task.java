@@ -1,6 +1,8 @@
 package com.backend.todo.domain;
 
 import lombok.*;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -17,6 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity(name = "tasks")
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Task extends AuditingEntity {
 
     /**

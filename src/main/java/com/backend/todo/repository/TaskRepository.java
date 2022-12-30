@@ -5,10 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.history.RevisionRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -16,7 +16,9 @@ import java.util.UUID;
  * @since 30.06.2020.
  */
 @Repository
-public interface TaskRepository extends JpaRepository<Task, UUID> {
+public interface TaskRepository extends
+        JpaRepository<Task, UUID>,
+        RevisionRepository<Task, UUID, Integer> {
 
     @Query("SELECT t FROM tasks t where " +
             "(CAST (:title AS text) IS NULL OR lower(t.title) like lower(concat('%', CAST (:title AS text), '%')))" +
