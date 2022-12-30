@@ -13,8 +13,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
- * TODO: comment.
- *
  * @author Alexey Voronin.
  * @since 30.12.2022.
  */
