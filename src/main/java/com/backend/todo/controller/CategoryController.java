@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -38,27 +39,16 @@ public class CategoryController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<CategoryReadDto> create(@RequestBody CategoryCreateEditDto categoryCreateEditDto) {
+    public ResponseEntity<CategoryReadDto> create(@RequestBody @Validated CategoryCreateEditDto categoryCreateEditDto) {
         logger.info(String.format("Input arguments: %s", categoryCreateEditDto));
-
-        if (categoryCreateEditDto.getTitle() == null || categoryCreateEditDto.getTitle().trim().isEmpty()) {
-            logger.info("Missed parameters: title");
-            return new ResponseEntity("Missed parameter: title", HttpStatus.NOT_ACCEPTABLE);
-        }
         CategoryReadDto categoryReadDto = categoryService.create(categoryCreateEditDto);
         logger.info(String.format("Save: %s", categoryReadDto));
         return ok(categoryReadDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryReadDto> update(@PathVariable UUID id, @RequestBody CategoryCreateEditDto categoryCreateEditDto) {
+    public ResponseEntity<CategoryReadDto> update(@PathVariable UUID id, @RequestBody @Validated CategoryCreateEditDto categoryCreateEditDto) {
         logger.info(String.format("Input arguments: %s", categoryCreateEditDto));
-
-        if (categoryCreateEditDto.getTitle() == null || categoryCreateEditDto.getTitle().trim().isEmpty()) {
-            logger.info("Missed parameters: title");
-            return new ResponseEntity("Missed parameter: title", HttpStatus.NOT_ACCEPTABLE);
-        }
-
         CategoryReadDto categoryReadDto = categoryService.update(id, categoryCreateEditDto)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
