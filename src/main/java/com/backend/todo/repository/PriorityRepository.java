@@ -13,5 +13,6 @@ import java.util.UUID;
  */
 @Repository
 public interface PriorityRepository extends JpaRepository<Priority, UUID> {
+
     List<Priority> findAllByOrderByTitleAsc();
 }

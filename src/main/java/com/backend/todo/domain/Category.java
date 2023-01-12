@@ -1,6 +1,8 @@
 package com.backend.todo.domain;
 
 import lombok.*;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -16,6 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity(name = "categories")
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Category extends AuditingEntity {
 
     /**

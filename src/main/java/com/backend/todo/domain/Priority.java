@@ -1,6 +1,8 @@
 package com.backend.todo.domain;
 
 import lombok.*;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,6 +21,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity(name = "priorities")
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Priority extends AuditingEntity {
 
     /**

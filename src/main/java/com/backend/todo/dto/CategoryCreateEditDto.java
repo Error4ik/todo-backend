@@ -3,6 +3,9 @@ package com.backend.todo.dto;
 import lombok.Value;
 import lombok.experimental.FieldNameConstants;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 /**
  * TODO: comment.
  *
@@ -13,6 +16,8 @@ import lombok.experimental.FieldNameConstants;
 @FieldNameConstants
 public class CategoryCreateEditDto {
 
+    @Size(min = 3, max = 200)
+    @NotBlank
     String title;
     int completedCount;
     int uncompletedCount;

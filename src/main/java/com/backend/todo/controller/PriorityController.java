@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -25,7 +26,7 @@ public class PriorityController {
 
     private Logger logger = LoggerFactory.getLogger(PriorityController.class);
 
-    private PriorityService priorityService;
+    private final PriorityService priorityService;
 
     public PriorityController(PriorityService priorityService) {
         this.priorityService = priorityService;
@@ -38,32 +39,19 @@ public class PriorityController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<PriorityReadDto> create(@RequestBody PriorityCreateEditDto priorityCreateEditDto) {
+    public ResponseEntity<PriorityReadDto> create(@RequestBody @Validated PriorityCreateEditDto priorityCreateEditDto) {
         logger.info(String.format("Input arguments: %s", priorityCreateEditDto));
-        if (priorityCreateEditDto.getTitle() == null || priorityCreateEditDto.getTitle().trim().isEmpty()) {
-            logger.info("Missed parameters: title");
-            return new ResponseEntity("Missed parameters: title", HttpStatus.NOT_ACCEPTABLE);
-        }
-        if (priorityCreateEditDto.getColor() == null || priorityCreateEditDto.getColor().trim().isEmpty()) {
-            logger.info("Missed parameters: color");
-            return new ResponseEntity("Missed parameters: color", HttpStatus.NOT_ACCEPTABLE);
-        }
         PriorityReadDto p = priorityService.create(priorityCreateEditDto);
         logger.info(String.format("Save: %s", p));
         return ok(p);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PriorityReadDto> update(@PathVariable UUID id, @RequestBody PriorityCreateEditDto priorityCreateEditDto) {
+    public ResponseEntity<PriorityReadDto> update(
+            @PathVariable UUID id,
+            @RequestBody @Validated PriorityCreateEditDto priorityCreateEditDto) {
+
         logger.info(String.format("Input arguments: %s", priorityCreateEditDto));
-        if (priorityCreateEditDto.getTitle() == null || priorityCreateEditDto.getTitle().trim().isEmpty()) {
-            logger.info("Missed parameters: title");
-            return new ResponseEntity("Missed parameters: title", HttpStatus.NOT_ACCEPTABLE);
-        }
-        if (priorityCreateEditDto.getColor() == null || priorityCreateEditDto.getColor().trim().isEmpty()) {
-            logger.info("Missed parameters: color");
-            return new ResponseEntity("Missed parameters: color", HttpStatus.NOT_ACCEPTABLE);
-        }
         PriorityReadDto priorityReadDto = priorityService.update(id, priorityCreateEditDto)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 

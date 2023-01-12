@@ -2,6 +2,7 @@ package com.backend.todo.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.envers.Audited;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -22,15 +23,19 @@ import java.time.Instant;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AuditingEntity {
 
+    @Audited
     @CreatedDate
     private Instant createdAt;
 
+    @Audited
     @LastModifiedDate
     private Instant modifiedAt;
 
+    @Audited
     @CreatedBy
     private String createdBy;
 
+    @Audited
     @LastModifiedBy
     private String modifiedBy;
 }
