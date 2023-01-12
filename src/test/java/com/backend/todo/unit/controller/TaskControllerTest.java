@@ -13,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -46,9 +47,11 @@ public class TaskControllerTest {
 
     @Test
     public void create() throws Exception {
+        String string = new ObjectMapper().writeValueAsString(
+                new TaskCreateEditDto("title", 0, LocalDate.now(), UUID.randomUUID(), UUID.randomUUID()));
         mockMvc.perform(post("/api/v1/tasks")
                 .content(new ObjectMapper().writeValueAsString(
-                        new TaskCreateEditDto("title", 0, null, null, null)))
+                        new TaskCreateEditDto("title", 0, null, UUID.randomUUID(), UUID.randomUUID())))
                 .contentType(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().is2xxSuccessful());
@@ -63,7 +66,7 @@ public class TaskControllerTest {
                         new TaskCreateEditDto("", 0, null, null, null)))
                 .contentType(MediaType.APPLICATION_JSON)
         )
-                .andExpect(status().isNotAcceptable());
+                .andExpect(status().isBadRequest());
 
         verifyNoMoreInteractions(taskService);
     }
@@ -76,7 +79,7 @@ public class TaskControllerTest {
 
         mockMvc.perform(put("/api/v1/tasks/{id}", UUID.randomUUID().toString())
                 .content(new ObjectMapper().writeValueAsString(
-                        new TaskCreateEditDto("Title", 0, null, null, null)))
+                        new TaskCreateEditDto("Title", 0, null, UUID.randomUUID(), UUID.randomUUID())))
                 .contentType(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().is2xxSuccessful());
@@ -94,9 +97,9 @@ public class TaskControllerTest {
                         new TaskCreateEditDto("Title", 0, null, null, null)))
                 .contentType(MediaType.APPLICATION_JSON)
         )
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
 
-        verify(taskService, times(1)).update(any(), any());
+        verifyNoMoreInteractions(taskService);
     }
 
     @Test

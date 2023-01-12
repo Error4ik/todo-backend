@@ -63,7 +63,7 @@ public class PriorityControllerTest {
                         new PriorityCreateEditDto("", "color")))
                 .contentType(MediaType.APPLICATION_JSON)
         )
-                .andExpect(status().isNotAcceptable());
+                .andExpect(status().isBadRequest());
 
         verifyNoMoreInteractions(priorityService);
     }
@@ -75,7 +75,7 @@ public class PriorityControllerTest {
                         new PriorityCreateEditDto("title", "")))
                 .contentType(MediaType.APPLICATION_JSON)
         )
-                .andExpect(status().isNotAcceptable());
+                .andExpect(status().isBadRequest());
 
         verifyNoMoreInteractions(priorityService);
     }
@@ -103,7 +103,7 @@ public class PriorityControllerTest {
                 .content(new ObjectMapper().writeValueAsString(
                         new PriorityCreateEditDto("", "color")))
                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isNotAcceptable());
+        ).andExpect(status().isBadRequest());
 
         verifyNoMoreInteractions(priorityService);
     }
@@ -117,7 +117,7 @@ public class PriorityControllerTest {
                 .content(new ObjectMapper().writeValueAsString(
                         new PriorityCreateEditDto("title", "")))
                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isNotAcceptable());
+        ).andExpect(status().isBadRequest());
 
         verifyNoMoreInteractions(priorityService);
     }

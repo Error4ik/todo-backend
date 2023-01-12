@@ -62,7 +62,7 @@ public class CategoryControllerTest {
                         new CategoryCreateEditDto("", 0, 0)))
                 .contentType(MediaType.APPLICATION_JSON)
         )
-                .andExpect(status().isNotAcceptable());
+                .andExpect(status().isBadRequest());
 
         verifyNoMoreInteractions(categoryService);
     }
@@ -90,7 +90,7 @@ public class CategoryControllerTest {
                 .content(new ObjectMapper().writeValueAsString(
                         new CategoryCreateEditDto("", 0, 0)))
                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isNotAcceptable());
+        ).andExpect(status().isBadRequest());
 
         verifyNoMoreInteractions(categoryService);
     }
