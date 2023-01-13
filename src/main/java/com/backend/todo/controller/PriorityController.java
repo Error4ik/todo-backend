@@ -41,9 +41,9 @@ public class PriorityController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<PriorityReadDto> create(@RequestBody @Validated PriorityCreateEditDto priorityCreateEditDto) {
         logger.info(String.format("Input arguments: %s", priorityCreateEditDto));
-        PriorityReadDto p = priorityService.create(priorityCreateEditDto);
-        logger.info(String.format("Save: %s", p));
-        return ok(p);
+        PriorityReadDto priorityReadDto = priorityService.create(priorityCreateEditDto);
+        logger.info(String.format("Save: %s", priorityReadDto));
+        return new ResponseEntity<>(priorityReadDto, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

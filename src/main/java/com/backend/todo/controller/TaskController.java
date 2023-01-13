@@ -43,10 +43,9 @@ public class TaskController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<TaskReadDto> create(
             @RequestBody @Validated({Default.class, CreateTask.class}) TaskCreateEditDto taskCreateEditDto) {
-        return ok(taskService.create(taskCreateEditDto));
+        return new ResponseEntity<>(taskService.create(taskCreateEditDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

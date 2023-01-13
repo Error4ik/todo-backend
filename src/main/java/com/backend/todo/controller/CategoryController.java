@@ -38,12 +38,11 @@ public class CategoryController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<CategoryReadDto> create(@RequestBody @Validated CategoryCreateEditDto categoryCreateEditDto) {
         logger.info(String.format("Input arguments: %s", categoryCreateEditDto));
         CategoryReadDto categoryReadDto = categoryService.create(categoryCreateEditDto);
         logger.info(String.format("Save: %s", categoryReadDto));
-        return ok(categoryReadDto);
+        return new ResponseEntity<>(categoryReadDto, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
