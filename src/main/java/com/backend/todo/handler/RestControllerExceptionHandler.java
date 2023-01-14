@@ -1,5 +1,6 @@
 package com.backend.todo.handler;
 
+import com.backend.todo.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -8,7 +9,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 /**
@@ -31,11 +31,11 @@ public class RestControllerExceptionHandler extends ResponseEntityExceptionHandl
         return new ResponseEntity<>(responseError, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler
-    public ResponseEntity<Object> handleNotFound(ResponseStatusException ex) {
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<Object> handleNotFound(NotFoundException ex) {
         log.error("ex.getMessage()", ex);
         return new ResponseEntity<>(
-                new ResponseError(HttpStatus.NOT_FOUND, "There is no object with this ID"),
+                new ResponseError(HttpStatus.NOT_FOUND, ex.getMessage()),
                 HttpStatus.NOT_FOUND);
     }
 }

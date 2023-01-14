@@ -2,6 +2,7 @@ package com.backend.todo.controller;
 
 import com.backend.todo.dto.TaskCreateEditDto;
 import com.backend.todo.dto.TaskReadDto;
+import com.backend.todo.exception.NotFoundException;
 import com.backend.todo.search.SearchParams;
 import com.backend.todo.service.TaskService;
 import com.backend.todo.validation.group.CreateTask;
@@ -13,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.groups.Default;
 import java.util.List;
@@ -55,7 +55,7 @@ public class TaskController {
 
         logger.info(String.format("Input arguments: %s", taskCreateEditDto));
         TaskReadDto taskReadDto = this.taskService.update(id, taskCreateEditDto)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException("There is no object with this ID"));
         logger.info(String.format("Update: %s", taskReadDto));
         return ok(taskReadDto);
     }
@@ -64,7 +64,7 @@ public class TaskController {
     public ResponseEntity<TaskReadDto> findById(@PathVariable UUID id) {
         logger.info(String.format("Input arguments: %s", id));
         TaskReadDto taskReadDto = this.taskService.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException("There is no object with this ID"));
         logger.info(String.format("Return: %s", taskReadDto));
         return ok(taskReadDto);
     }

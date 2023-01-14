@@ -2,6 +2,7 @@ package com.backend.todo.controller;
 
 import com.backend.todo.dto.CategoryCreateEditDto;
 import com.backend.todo.dto.CategoryReadDto;
+import com.backend.todo.exception.NotFoundException;
 import com.backend.todo.service.CategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +50,7 @@ public class CategoryController {
     public ResponseEntity<CategoryReadDto> update(@PathVariable UUID id, @RequestBody @Validated CategoryCreateEditDto categoryCreateEditDto) {
         logger.info(String.format("Input arguments: %s", categoryCreateEditDto));
         CategoryReadDto categoryReadDto = categoryService.update(id, categoryCreateEditDto)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException("There is no object with this ID"));
 
         logger.info(String.format("Update: %s", categoryReadDto));
         return ok(categoryReadDto);
@@ -59,7 +60,7 @@ public class CategoryController {
     public ResponseEntity<CategoryReadDto> findById(@PathVariable UUID id) {
         logger.info(String.format("Input arguments: %s", id));
         CategoryReadDto categoryReadDto = categoryService.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException("There is no object with this ID"));
 
         logger.info(String.format("Return: %s", categoryReadDto));
         return ok(categoryReadDto);

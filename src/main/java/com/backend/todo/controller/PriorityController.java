@@ -2,6 +2,7 @@ package com.backend.todo.controller;
 
 import com.backend.todo.dto.PriorityCreateEditDto;
 import com.backend.todo.dto.PriorityReadDto;
+import com.backend.todo.exception.NotFoundException;
 import com.backend.todo.service.PriorityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +54,7 @@ public class PriorityController {
 
         logger.info(String.format("Input arguments: %s", priorityCreateEditDto));
         PriorityReadDto priorityReadDto = priorityService.update(id, priorityCreateEditDto)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException("There is no object with this ID"));
 
         logger.info(String.format("Update: %s", priorityReadDto));
         return ok(priorityReadDto);
@@ -63,7 +64,7 @@ public class PriorityController {
     public ResponseEntity<PriorityReadDto> findById(@PathVariable UUID id) {
         logger.info(String.format("Input arguments: %s", id));
         PriorityReadDto priorityReadDto = priorityService.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException("There is no object with this ID"));
         logger.info(String.format("Return: %s", priorityReadDto));
         return ok(priorityReadDto);
     }
