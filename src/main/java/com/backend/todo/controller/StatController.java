@@ -2,8 +2,6 @@ package com.backend.todo.controller;
 
 import com.backend.todo.dto.StatReadDto;
 import com.backend.todo.service.StatService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,9 +19,7 @@ import static org.springframework.http.ResponseEntity.ok;
 @RequestMapping("/api/v1/stats")
 public class StatController {
 
-    private Logger logger = LoggerFactory.getLogger(StatController.class);
-
-    private StatService statService;
+    private final StatService statService;
 
     public StatController(StatService statService) {
         this.statService = statService;

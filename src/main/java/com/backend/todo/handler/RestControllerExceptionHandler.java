@@ -1,7 +1,6 @@
 package com.backend.todo.handler;
 
 import com.backend.todo.exception.NotFoundException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +14,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  * @author Alexey Voronin.
  * @since 13.01.2023.
  */
-@Slf4j
 @RestControllerAdvice
 public class RestControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -23,7 +21,6 @@ public class RestControllerExceptionHandler extends ResponseEntityExceptionHandl
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
 
-        log.error("ex.getMessage()", ex);
         ResponseError responseError = new ResponseError(HttpStatus.BAD_REQUEST, "Validation failed for argument.");
         ex.getBindingResult().getFieldErrors().forEach(fieldError ->
                 responseError.getErrorMap().put(fieldError.getField(), fieldError.getDefaultMessage()));
@@ -33,7 +30,6 @@ public class RestControllerExceptionHandler extends ResponseEntityExceptionHandl
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Object> handleNotFound(NotFoundException ex) {
-        log.error("ex.getMessage()", ex);
         return new ResponseEntity<>(
                 new ResponseError(HttpStatus.NOT_FOUND, ex.getMessage()),
                 HttpStatus.NOT_FOUND);

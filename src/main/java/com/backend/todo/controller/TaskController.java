@@ -6,8 +6,6 @@ import com.backend.todo.exception.NotFoundException;
 import com.backend.todo.search.SearchParams;
 import com.backend.todo.service.TaskService;
 import com.backend.todo.validation.group.CreateTask;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +26,6 @@ import static org.springframework.http.ResponseEntity.*;
 @RestController
 @RequestMapping("/api/v1/tasks")
 public class TaskController {
-
-    private Logger logger = LoggerFactory.getLogger(TaskController.class);
 
     private final TaskService taskService;
 
@@ -53,19 +49,15 @@ public class TaskController {
             @PathVariable("id") UUID id,
             @RequestBody @Validated TaskCreateEditDto taskCreateEditDto) {
 
-        logger.info(String.format("Input arguments: %s", taskCreateEditDto));
         TaskReadDto taskReadDto = this.taskService.update(id, taskCreateEditDto)
                 .orElseThrow(() -> new NotFoundException("There is no object with this ID"));
-        logger.info(String.format("Update: %s", taskReadDto));
         return ok(taskReadDto);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<TaskReadDto> findById(@PathVariable UUID id) {
-        logger.info(String.format("Input arguments: %s", id));
         TaskReadDto taskReadDto = this.taskService.findById(id)
                 .orElseThrow(() -> new NotFoundException("There is no object with this ID"));
-        logger.info(String.format("Return: %s", taskReadDto));
         return ok(taskReadDto);
     }
 
