@@ -1,8 +1,6 @@
 package com.backend.todo.exception;
 
 /**
- * TODO: comment.
- *
  * @author Alexey Voronin.
  * @since 14.01.2023.
  */

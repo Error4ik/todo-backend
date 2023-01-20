@@ -10,8 +10,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import java.util.Optional;
 
 /**
- * TODO: comment.
- *
  * @author Alexey Voronin.
  * @since 29.12.2022.
  */
