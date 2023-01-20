@@ -1,8 +1,6 @@
 package com.backend.todo.mapper;
 
 /**
- * TODO: comment.
- *
  * @author Alexey Voronin.
  * @since 24.11.2022.
  */

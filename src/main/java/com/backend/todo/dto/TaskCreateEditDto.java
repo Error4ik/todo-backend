@@ -12,8 +12,6 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 /**
- * TODO: comment.
- *
  * @author Alexey Voronin.
  * @since 14.11.2022.
  */

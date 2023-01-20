@@ -5,8 +5,6 @@ import com.backend.todo.dto.CategoryReadDto;
 import org.springframework.stereotype.Component;
 
 /**
- * TODO: comment.
- *
  * @author Alexey Voronin.
  * @since 26.11.2022.
  */

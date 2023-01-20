@@ -5,8 +5,6 @@ import com.backend.todo.dto.PriorityCreateEditDto;
 import org.springframework.stereotype.Component;
 
 /**
- * TODO: comment.
- *
  * @author Alexey Voronin.
  * @since 27.11.2022.
  */

@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 /**
- * TODO: comment.
- *
  * @author Alexey Voronin.
  * @since 26.11.2022.
  */
