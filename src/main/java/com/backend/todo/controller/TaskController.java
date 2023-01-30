@@ -6,10 +6,10 @@ import com.backend.todo.exception.NotFoundException;
 import com.backend.todo.search.SearchParams;
 import com.backend.todo.service.TaskService;
 import com.backend.todo.validation.group.CreateTask;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.NonNull;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,7 +69,7 @@ public class TaskController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Page<TaskReadDto>> search(@RequestBody @NonNull SearchParams searchParams) {
+    public ResponseEntity<Page<TaskReadDto>> search(@ParameterObject SearchParams searchParams) {
         return ok(taskService.search(searchParams));
     }
 }
