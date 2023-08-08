@@ -26,8 +26,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * TODO: comment.
- *
  * @author Alexey Voronin.
  * @since 02.12.2022.
  */

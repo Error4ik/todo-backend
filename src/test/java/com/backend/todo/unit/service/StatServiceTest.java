@@ -19,8 +19,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 /**
- * TODO: comment.
- *
  * @author Alexey Voronin.
  * @since 03.12.2022.
  */

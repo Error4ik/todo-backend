@@ -12,8 +12,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * TODO: comment.
- *
  * @author Alexey Voronin.
  * @since 07.12.2022.
  */
