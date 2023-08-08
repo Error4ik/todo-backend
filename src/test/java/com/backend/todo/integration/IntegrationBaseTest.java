@@ -8,8 +8,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 /**
- * TODO: comment.
- *
  * @author Alexey Voronin.
  * @since 06.12.2022.
  */

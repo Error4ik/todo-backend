@@ -10,8 +10,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * TODO: comment.
- *
  * @author Alexey Voronin.
  * @since 06.12.2022.
  */
